@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>　</title>
+
+  <style>
+    body {
+      color: #000000;
+      background-color: #ffffff;
+    }
+
+    .page {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    .time_container,
+    .date_container,
+    .button_container {
+      width: 100%;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .mission_container{
+      text-align: left;
+      width: 100%;
+      margin-top: 40px;
+      margin-left: 47px;
+    }
+    .mission,
+    .clear,
+    .text {
+      font-size: 3rem;
+    }
+
+    .hour,
+    .minute {
+      font-size: 12rem;
+      padding-top: 5px;
+    }
+
+    input[type="checkbox"] {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+    }
+
+    .date {
+      padding-top: 10px;
+      font-size: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="time_container">
+      <div class="hour" id="hour"></div>
+      <div class="minute" id="minute"></div>
+    </div>
+
+    <div class="date_container">
+      <span class="date" id="date"></span>
+      &nbsp;&nbsp;
+      <span class="date" id="week"></span>
+    </div>
+    
+    <div class="mission_container" id="mission_container">
+
+    </div>
+
+    <div class="button_container">
+      <input type="text" class="text" id="text" />
+      <button onclick="clearall()" class="clear" id="clear">☢</button>
+    </div>
+  </div>
+
+
+  <script>
+    function update() {
+      var date = new Date()
+      var utc8DiffMinutes = date.getTimezoneOffset() + 480
+      date.setMinutes(date.getMinutes() + utc8DiffMinutes)
+
+      var hourString = date.getHours()
+      var minuteString = ('0' + date.getMinutes()).slice(-2)
+      var dateString = (date.getMonth() + 1) + '月' + date.getDate() + '日'
+      var weekList = ['日', '一', '二', '三', '四', '五', '六']
+      var weekString = '星期' + weekList[date.getDay()]
+
+      document.getElementById("hour").innerHTML = hourString
+      document.getElementById("minute").innerHTML = minuteString
+      document.getElementById("date").innerHTML = dateString
+      document.getElementById("week").innerHTML = weekString
+    }
+
+    update()
+    setInterval("update()", 30 * 1000)
+
+    function add() {
+      var mission = document.getElementById("text").value
+      document.getElementById("mission_container").innerHTML +=
+        "<div><input type=\"checkbox\" id=\"checkbox\" /><span class=\"mission\">" +
+        mission +
+        "</span>&nbsp;&nbsp;<span></div>"
+    }
+
+    function clearall(){
+      document.getElementById("mission_container").innerHTML = " "
+    }
+
+    document.onkeyup = function (e) {
+      var code = e.charCode || e.keyCode;
+      if (code == 13) {
+        add()
+      }
+    }
+  </script>
+
+</body>
+
+</html>
